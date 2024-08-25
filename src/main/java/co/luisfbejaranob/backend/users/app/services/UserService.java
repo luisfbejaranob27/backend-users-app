@@ -1,5 +1,6 @@
 package co.luisfbejaranob.backend.users.app.services;
 
+import co.luisfbejaranob.backend.users.app.controllers.dto.UserDto;
 import co.luisfbejaranob.backend.users.app.entities.User;
 import co.luisfbejaranob.backend.users.app.exceptions.UserExceptions.*;
 import co.luisfbejaranob.backend.users.app.repositories.UserRepository;
@@ -7,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static co.luisfbejaranob.backend.users.app.utils.ObjectUtil.updatevalues;
+import static co.luisfbejaranob.backend.users.app.utils.ObjectUtil.updateValues;
+import static co.luisfbejaranob.backend.users.app.utils.UserMappers.toUserDto;
+import static co.luisfbejaranob.backend.users.app.utils.UserMappers.userDtoList;
 
 @Service
 public class UserService
@@ -19,7 +22,7 @@ public class UserService
         this.repository = repository;
     }
 
-    public List<User> findAll()
+    public List<UserDto> findAll()
     {
         var users = repository.findAll();
 
@@ -28,7 +31,7 @@ public class UserService
             throw new UsersNotFoundException();
         }
 
-        return users;
+        return userDtoList(users);
     }
 
     public User findById(UUID id)
@@ -59,15 +62,15 @@ public class UserService
         return true;
     }
 
-    public User create(User user)
+    public UserDto create(User user)
     {
-        return repository.save(user);
+        return toUserDto(repository.save(user));
     }
 
-    public User update(UUID id, User user) throws IllegalAccessException {
+    public UserDto update(UUID id, User user) throws IllegalAccessException {
         var userFound = findById(id);
 
-        return repository.save(updatevalues(userFound, user));
+        return toUserDto(repository.save(updateValues(userFound, user)));
     }
 
     public void deleteById(UUID id)

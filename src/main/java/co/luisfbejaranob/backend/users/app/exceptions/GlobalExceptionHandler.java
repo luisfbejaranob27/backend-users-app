@@ -104,7 +104,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
                 " method is not supported for this request. Supported methods are ");
         Objects.requireNonNull(ex.getSupportedHttpMethods()).forEach(t -> builder.append(t).append(" "));
 
-        ApiErrorDto apiError = new ApiErrorDto(HttpStatus.METHOD_NOT_ALLOWED, null,ex.getLocalizedMessage(), builder.toString());
+        ApiErrorDto apiError = new ApiErrorDto(HttpStatus.METHOD_NOT_ALLOWED, null, ex.getLocalizedMessage(), builder.toString());
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
@@ -136,7 +136,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ApiErrorDto(HttpStatus.BAD_REQUEST , null, e.getMessage() , getErrorMessage(e.getMessage())));
+                .body(new ApiErrorDto(HttpStatus.BAD_REQUEST , null, null , getErrorMessage(e.getMessage())));
     }
 
     private String getErrorMessage(String message)
@@ -156,12 +156,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     {
         List<String> errors = new ArrayList<>();
         for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
-            errors.add(violation.getRootBeanClass().getName() + " " +
-                    violation.getPropertyPath() + ": " + violation.getMessage());
+            errors.add(violation.getPropertyPath() + ": " + violation.getMessage());
         }
 
         ApiErrorDto apiError =
-                new ApiErrorDto(HttpStatus.BAD_REQUEST, null, ex.getLocalizedMessage(), errors);
+                new ApiErrorDto(HttpStatus.BAD_REQUEST, null, null, errors);
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,11 +17,17 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ApiErrorDto
+public class ApiErrorDto implements Serializable
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private HttpStatus status;
+
     private String code;
+
     private String message;
+
     private List<String> errors;
 
     public ApiErrorDto(HttpStatus status, String code, String message)
