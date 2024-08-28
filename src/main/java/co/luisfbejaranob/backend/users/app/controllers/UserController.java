@@ -1,6 +1,5 @@
 package co.luisfbejaranob.backend.users.app.controllers;
 
-import co.luisfbejaranob.backend.users.app.controllers.dto.UserDto;
 import co.luisfbejaranob.backend.users.app.entities.User;
 import co.luisfbejaranob.backend.users.app.exceptions.UserExceptions.*;
 import co.luisfbejaranob.backend.users.app.exceptions.dto.ApiErrorDto;
@@ -16,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("users")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class UserController
 {
     private final UserService service;
@@ -26,7 +26,7 @@ public class UserController
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> findAll()
+    public ResponseEntity<List<User>> findAll()
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -49,7 +49,7 @@ public class UserController
                 .body(service.findByUsername(username));
     }
 
-    @GetMapping("{filter}/{value}")
+    @GetMapping("exists/{filter}/{value}")
     public ResponseEntity<Boolean> exits(@PathVariable String filter, @PathVariable String value)
     {
         var result = switch (filter) {
@@ -64,7 +64,7 @@ public class UserController
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> create(@RequestBody @Valid User user)
+    public ResponseEntity<User> create(@RequestBody @Valid User user)
     {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -72,7 +72,7 @@ public class UserController
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<UserDto> update(@PathVariable UUID id, @RequestBody User user) throws IllegalAccessException {
+    public ResponseEntity<User> update(@PathVariable UUID id, @RequestBody User user) throws IllegalAccessException {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(service.update(id, user));

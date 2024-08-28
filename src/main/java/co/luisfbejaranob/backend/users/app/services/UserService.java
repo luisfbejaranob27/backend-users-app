@@ -1,6 +1,5 @@
 package co.luisfbejaranob.backend.users.app.services;
 
-import co.luisfbejaranob.backend.users.app.controllers.dto.UserDto;
 import co.luisfbejaranob.backend.users.app.entities.User;
 import co.luisfbejaranob.backend.users.app.exceptions.UserExceptions.*;
 import co.luisfbejaranob.backend.users.app.repositories.UserRepository;
@@ -9,8 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static co.luisfbejaranob.backend.users.app.utils.ObjectUtil.updateValues;
-import static co.luisfbejaranob.backend.users.app.utils.UserMappers.toUserDto;
-import static co.luisfbejaranob.backend.users.app.utils.UserMappers.userDtoList;
 
 @Service
 public class UserService
@@ -22,7 +19,7 @@ public class UserService
         this.repository = repository;
     }
 
-    public List<UserDto> findAll()
+    public List<User> findAll()
     {
         var users = repository.findAll();
 
@@ -31,7 +28,7 @@ public class UserService
             throw new UsersNotFoundException();
         }
 
-        return userDtoList(users);
+        return users;
     }
 
     public User findById(UUID id)
@@ -46,31 +43,23 @@ public class UserService
 
     public boolean existsByUsername(String username)
     {
-        if (!repository.existsByUsername(username))
-        {
-           throw new UserNotFoundException(username);
-        }
-        return true;
+        return repository.existsByUsername(username);
     }
 
     public boolean existsByEmail(String email)
     {
-        if (!repository.existsByEmail(email))
-        {
-            throw new UserNotFoundException(email);
-        }
-        return true;
+        return repository.existsByEmail(email);
     }
 
-    public UserDto create(User user)
+    public User create(User user)
     {
-        return toUserDto(repository.save(user));
+        return repository.save(user);
     }
 
-    public UserDto update(UUID id, User user) throws IllegalAccessException {
+    public User update(UUID id, User user) throws IllegalAccessException {
         var userFound = findById(id);
 
-        return toUserDto(repository.save(updateValues(userFound, user)));
+        return repository.save(updateValues(userFound, user));
     }
 
     public void deleteById(UUID id)
