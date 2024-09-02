@@ -10,7 +10,7 @@ public enum Role
     ADMINISTRATOR(List.of(
             Operation.READ_ALL_USERS,
             Operation.READ_USER_BY_ID,
-            Operation.READ_USER_BY_NAME,
+            Operation.READ_USER_BY_USERNAME,
             Operation.READ_PROFILE,
             Operation.EXIST_USER,
             Operation.CREATE_USER,
@@ -20,11 +20,12 @@ public enum Role
     HUMAN_RESOURCES(List.of(
             Operation.READ_ALL_USERS,
             Operation.READ_USER_BY_ID,
-            Operation.READ_USER_BY_NAME,
+            Operation.READ_USER_BY_USERNAME,
             Operation.READ_PROFILE,
             Operation.EXIST_USER
     )),
     USER(List.of(
+            Operation.EXIST_USER,
             Operation.READ_PROFILE
     )),
     ;

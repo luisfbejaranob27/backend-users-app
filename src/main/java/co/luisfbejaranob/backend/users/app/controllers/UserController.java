@@ -2,12 +2,14 @@ package co.luisfbejaranob.backend.users.app.controllers;
 
 import co.luisfbejaranob.backend.users.app.entities.User;
 import co.luisfbejaranob.backend.users.app.exceptions.UserExceptions.*;
+import co.luisfbejaranob.backend.users.app.security.services.AuthenticationService;
 import co.luisfbejaranob.backend.users.app.utils.exceptions.dto.ApiErrorDto;
 import co.luisfbejaranob.backend.users.app.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,43 +20,50 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:5173/")
 public class UserController
 {
-    private final UserService service;
+    private final UserService userService;
 
-    public UserController(UserService service)
+    private final AuthenticationService authenticationService;
+
+    public UserController(UserService userService, AuthenticationService authenticationService)
     {
-        this.service = service;
+        this.userService = userService;
+        this.authenticationService = authenticationService;
     }
 
+    @PreAuthorize("hasAuthority('READ_ALL_USERS')")
     @GetMapping
     public ResponseEntity<List<User>> findAll()
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findAll());
+                .body(userService.findAll());
     }
 
+    @PreAuthorize("hasAuthority('READ_USER_BY_ID')")
     @GetMapping("{id}")
     public ResponseEntity<User> findById(@PathVariable UUID id)
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findById(id));
+                .body(userService.findById(id));
     }
 
+    @PreAuthorize("hasAuthority('READ_USER_BY_USERNAME')")
     @GetMapping("username/{username}")
     public ResponseEntity<User> findByUsername(@PathVariable String username)
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.findByUsername(username));
+                .body(userService.findByUsername(username));
     }
 
+    @PreAuthorize("hasAuthority('EXIST_USER')")
     @GetMapping("exists/{filter}/{value}")
-    public ResponseEntity<Boolean> exits(@PathVariable String filter, @PathVariable String value)
+    public ResponseEntity<Boolean> exist(@PathVariable String filter, @PathVariable String value)
     {
         var result = switch (filter) {
-            case "username" -> service.existsByUsername(value);
-            case "email" -> service.existsByEmail(value);
+            case "username" -> userService.existsByUsername(value);
+            case "email" -> userService.existsByEmail(value);
             default -> throw new IllegalArgumentException("Invalid filter: %s".formatted(filter));
         };
 
@@ -63,25 +72,28 @@ public class UserController
                 .body(result);
     }
 
+    @PreAuthorize("hasAuthority('CREATE_USER')")
     @PostMapping
     public ResponseEntity<User> create(@RequestBody @Valid User user)
     {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(service.create(user));
+                .body(authenticationService.create(user));
     }
 
+    @PreAuthorize("hasAuthority('UPDATE_USER')")
     @PutMapping("{id}")
     public ResponseEntity<User> update(@PathVariable UUID id, @RequestBody User user) throws IllegalAccessException {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.update(id, user));
+                .body(userService.update(id, user));
     }
 
+    @PreAuthorize("hasAuthority('DELETE_USER')")
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteById(@PathVariable UUID id)
     {
-        service.deleteById(id);
+        userService.deleteById(id);
 
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

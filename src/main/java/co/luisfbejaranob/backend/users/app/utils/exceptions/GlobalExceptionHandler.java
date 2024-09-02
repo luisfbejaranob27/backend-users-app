@@ -9,6 +9,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -186,6 +189,38 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     {
         ApiErrorDto apiError =
                 new ApiErrorDto(HttpStatus.BAD_REQUEST, null, ex.getMessage());
+
+        return new ResponseEntity<>(
+                apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<Object> handleAuthorizationDeniedException(AuthorizationDeniedException ex)
+    {
+        ApiErrorDto apiError =
+                new ApiErrorDto(HttpStatus.FORBIDDEN, null, ex.getMessage());
+
+        return new ResponseEntity<>(
+                apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex)
+    {
+        ApiErrorDto apiError =
+                new ApiErrorDto(HttpStatus.BAD_REQUEST, null, ex.getMessage());
+
+        return new ResponseEntity<>(
+                apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    public ResponseEntity<Object> handleInternalAuthenticationServiceException(InternalAuthenticationServiceException ex)
+    {
+        ApiErrorDto apiError =
+                new ApiErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, null, ex.getMessage());
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());

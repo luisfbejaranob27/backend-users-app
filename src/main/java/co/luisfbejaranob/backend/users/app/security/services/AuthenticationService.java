@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -20,20 +21,30 @@ public class AuthenticationService
 
     private final JwtService jwtService;
 
+    private final PasswordEncoder passwordEncoder;
+
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationService(UserService userService, JwtService jwtService, AuthenticationManager authenticationManager)
+    public AuthenticationService(UserService userService, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager)
     {
         this.userService = userService;
         this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+    }
+
+    public User create(User user)
+    {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userService.create(user);
     }
 
     public RegisteredDto register(UserDto userDto)
     {
         validatePassword(userDto);
 
-        User newUser = userService.create(toEntity(userDto));
+        User newUser = create(toEntity(userDto));
+
         return toRegisteredDto(newUser, jwtService.generateToken(newUser));
     }
 

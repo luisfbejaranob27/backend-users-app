@@ -4,7 +4,7 @@ public enum Operation
 {
     READ_ALL_USERS,
     READ_USER_BY_ID,
-    READ_USER_BY_NAME,
+    READ_USER_BY_USERNAME,
     READ_PROFILE,
     EXIST_USER,
     CREATE_USER,
