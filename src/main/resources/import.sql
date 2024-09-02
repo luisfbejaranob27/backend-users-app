@@ -1,2 +1,2 @@
 
-    INSERT INTO users (id, name, username, password, email, role, create_at) VALUES ('6b27e2dc-9afb-36f3-a433-add532882f70','Luis Bejarano', 'luisfbejaranob', 'B3j6r@n0', 'luisfbejaranob@outlook.com', 'Administrator', now());
+    INSERT INTO users (id, name, username, password, email, role, create_at) VALUES ('6b27e2dc-9afb-36f3-a433-add532882f70','Luis Bejarano', 'luisfbejaranob', '$2a$12$HYwD9bIF0BZkXaE4j5jZ7O/V233ILTxHVLlSR.674B3m4XMrxLj3q', 'luisfbejaranob@outlook.com', 'ROLE_ADMINISTRATOR', now());

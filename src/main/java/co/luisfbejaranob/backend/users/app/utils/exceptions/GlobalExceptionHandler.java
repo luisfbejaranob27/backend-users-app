@@ -1,6 +1,6 @@
-package co.luisfbejaranob.backend.users.app.exceptions;
+package co.luisfbejaranob.backend.users.app.utils.exceptions;
 
-import co.luisfbejaranob.backend.users.app.exceptions.dto.ApiErrorDto;
+import co.luisfbejaranob.backend.users.app.utils.exceptions.dto.ApiErrorDto;
 import jakarta.annotation.Nullable;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

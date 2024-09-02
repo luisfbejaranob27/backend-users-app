@@ -1,4 +1,4 @@
-package co.luisfbejaranob.backend.users.app.exceptions.dto;
+package co.luisfbejaranob.backend.users.app.utils.exceptions.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

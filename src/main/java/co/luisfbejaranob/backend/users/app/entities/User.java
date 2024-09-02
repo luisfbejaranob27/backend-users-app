@@ -1,13 +1,19 @@
 package co.luisfbejaranob.backend.users.app.entities;
 
+import co.luisfbejaranob.backend.users.app.entities.enumerations.Role;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +24,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-public class User
+public class User implements UserDetails
 {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -45,8 +51,9 @@ public class User
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", message = "The email must have a valid format")
     private String email;
 
-    @NotBlank
-    private String role;
+//    @NotBlank
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(name = "create_at")
     private Date createAt;
@@ -70,5 +77,37 @@ public class User
     public Date getUpdateAt()
     {
         return updateAt;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        if(role == null) return null;
+        if(role.getOperations() == null) return null;
+
+        return role.getOperations().stream()
+                .map(authority -> authority.name())
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
     }
 }

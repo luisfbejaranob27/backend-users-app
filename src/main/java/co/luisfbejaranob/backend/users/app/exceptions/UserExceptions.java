@@ -1,6 +1,6 @@
 package co.luisfbejaranob.backend.users.app.exceptions;
 
-import java.util.UUID;
+import co.luisfbejaranob.backend.users.app.utils.exceptions.CustomError;
 
 public interface UserExceptions
 {

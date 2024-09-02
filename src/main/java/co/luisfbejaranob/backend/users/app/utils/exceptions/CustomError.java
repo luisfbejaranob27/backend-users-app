@@ -1,4 +1,4 @@
-package co.luisfbejaranob.backend.users.app.exceptions;
+package co.luisfbejaranob.backend.users.app.utils.exceptions;
 
 import lombok.Getter;
 
