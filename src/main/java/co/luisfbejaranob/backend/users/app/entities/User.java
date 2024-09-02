@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -85,10 +86,14 @@ public class User implements UserDetails
         if(role == null) return null;
         if(role.getOperations() == null) return null;
 
-        return role.getOperations().stream()
-                .map(authority -> authority.name())
+        List<SimpleGrantedAuthority> authorities = role.getOperations().stream()
+                .map(Enum::name)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+
+        authorities.add(new SimpleGrantedAuthority("ROLE_%s".formatted(this.role.name())));
+
+        return authorities;
     }
 
     @Override

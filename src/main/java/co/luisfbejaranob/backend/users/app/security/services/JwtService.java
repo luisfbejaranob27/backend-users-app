@@ -15,7 +15,7 @@ import static co.luisfbejaranob.backend.users.app.security.constants.ConstantJwt
 @Service
 public class JwtService
 {
-    @Value("60000")
+    @Value("180000")
     private Integer expiration;
 
     public String generateToken(User user)

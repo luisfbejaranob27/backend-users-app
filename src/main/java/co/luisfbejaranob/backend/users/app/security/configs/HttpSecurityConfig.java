@@ -1,5 +1,7 @@
 package co.luisfbejaranob.backend.users.app.security.configs;
 
+import co.luisfbejaranob.backend.users.app.entities.enumerations.Operation;
+import co.luisfbejaranob.backend.users.app.entities.enumerations.Role;
 import co.luisfbejaranob.backend.users.app.security.authentication.filters.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,12 +38,42 @@ public class HttpSecurityConfig
                 .sessionManagement(management ->
                         management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests( authReqConfig -> {
                     authReqConfig.requestMatchers(toH2Console()).permitAll();
-                    authReqConfig.requestMatchers(HttpMethod.GET, "/users").permitAll();
-                    authReqConfig.requestMatchers(HttpMethod.GET, "/users/profile").permitAll();
-                    authReqConfig.requestMatchers(HttpMethod.PUT, "/users/{id}").permitAll();
+                    //
+                    authReqConfig.requestMatchers(HttpMethod.GET, "/users")
+                            .hasAnyRole(Role.ADMINISTRATOR.name(), Role.HUMAN_RESOURCES.name());
+                    authReqConfig.requestMatchers(HttpMethod.GET, "/users/{id}")
+                            .hasAnyRole(Role.ADMINISTRATOR.name(), Role.HUMAN_RESOURCES.name());
+                    authReqConfig.requestMatchers(HttpMethod.GET, "/users/username/{username}")
+                            .hasAnyRole(Role.ADMINISTRATOR.name(), Role.HUMAN_RESOURCES.name());
+                    authReqConfig.requestMatchers(HttpMethod.GET, "/users/profile")
+                            .hasAnyRole(Role.ADMINISTRATOR.name(), Role.HUMAN_RESOURCES.name(), Role.USER.name());
+                    authReqConfig.requestMatchers(HttpMethod.GET, "/users/exists/{filter}/{value}")
+                            .hasAnyRole(Role.ADMINISTRATOR.name(), Role.HUMAN_RESOURCES.name());
+                    authReqConfig.requestMatchers(HttpMethod.POST, "/users")
+                            .hasRole(Role.ADMINISTRATOR.name());
+                    authReqConfig.requestMatchers(HttpMethod.PUT, "/users/{id}")
+                            .hasRole(Role.ADMINISTRATOR.name());
+                    authReqConfig.requestMatchers(HttpMethod.DELETE, "/users/{id}")
+                            .hasRole(Role.ADMINISTRATOR.name());
+//                    authReqConfig.requestMatchers(HttpMethod.GET, "/users")
+//                            .hasAuthority(Operation.READ_ALL_USERS.name());
+//                    authReqConfig.requestMatchers(HttpMethod.GET, "/users/{id}")
+//                            .hasAuthority(Operation.READ_USER_BY_ID.name());
+//                    authReqConfig.requestMatchers(HttpMethod.GET, "/users/username/{username}")
+//                            .hasAuthority(Operation.READ_USER_BY_NAME.name());
+//                    authReqConfig.requestMatchers(HttpMethod.GET, "/users/profile")
+//                            .hasAuthority(Operation.READ_PROFILE.name());
+//                    authReqConfig.requestMatchers(HttpMethod.GET, "/users/exists/{filter}/{value}")
+//                            .hasAuthority(Operation.EXIST_USER.name());
+//                    authReqConfig.requestMatchers(HttpMethod.POST, "/users")
+//                            .hasAuthority(Operation.CREATE_USER.name());
+//                    authReqConfig.requestMatchers(HttpMethod.PUT, "/users/{id}")
+//                            .hasAuthority(Operation.UPDATE_USER.name());
+//                    authReqConfig.requestMatchers(HttpMethod.DELETE, "/users/{id}")
+//                            .hasAuthority(Operation.DELETE_USER.name());
                     authReqConfig.requestMatchers(HttpMethod.POST, "/users/register").permitAll();
                     authReqConfig.requestMatchers(HttpMethod.POST, "/auth/authenticate").permitAll();
                     authReqConfig.requestMatchers(HttpMethod.GET, "/auth/validate-token").permitAll();

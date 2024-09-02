@@ -3,9 +3,11 @@ package co.luisfbejaranob.backend.users.app.entities.enumerations;
 public enum Operation
 {
     READ_ALL_USERS,
-    READ_USER,
+    READ_USER_BY_ID,
+    READ_USER_BY_NAME,
     READ_PROFILE,
+    EXIST_USER,
     CREATE_USER,
     UPDATE_USER,
-    DISABLE_USER,
+    DELETE_USER,
 }

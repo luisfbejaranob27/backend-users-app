@@ -23,7 +23,7 @@ public class UserMappers
                 .username(dto.getUsername())
                 .password(dto.getPassword())
                 .email(dto.getEmail())
-                .role(Role.ROLE_USER)
+                .role(Role.USER)
                 .build();
     }
 

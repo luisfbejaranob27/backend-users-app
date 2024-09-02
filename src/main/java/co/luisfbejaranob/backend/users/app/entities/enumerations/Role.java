@@ -7,21 +7,24 @@ import java.util.List;
 @Getter
 public enum Role
 {
-    ROLE_ADMINISTRATOR(List.of(
+    ADMINISTRATOR(List.of(
             Operation.READ_ALL_USERS,
-            Operation.READ_USER,
+            Operation.READ_USER_BY_ID,
+            Operation.READ_USER_BY_NAME,
             Operation.READ_PROFILE,
+            Operation.EXIST_USER,
             Operation.CREATE_USER,
             Operation.UPDATE_USER,
-            Operation.DISABLE_USER
+            Operation.DELETE_USER
     )),
-    ROLE_HUMAN_RESOURCES(List.of(
+    HUMAN_RESOURCES(List.of(
             Operation.READ_ALL_USERS,
-            Operation.READ_USER,
+            Operation.READ_USER_BY_ID,
+            Operation.READ_USER_BY_NAME,
             Operation.READ_PROFILE,
-            Operation.UPDATE_USER
+            Operation.EXIST_USER
     )),
-    ROLE_USER(List.of(
+    USER(List.of(
             Operation.READ_PROFILE
     )),
     ;
