@@ -1,9 +1,6 @@
 package co.luisfbejaranob.backend.users.app.security.controllers;
 
-import co.luisfbejaranob.backend.users.app.security.dto.AuthenticationRequestDto;
-import co.luisfbejaranob.backend.users.app.security.dto.AuthenticationResponseDto;
-import co.luisfbejaranob.backend.users.app.security.dto.RegisteredDto;
-import co.luisfbejaranob.backend.users.app.security.dto.UserDto;
+import co.luisfbejaranob.backend.users.app.security.dto.*;
 import co.luisfbejaranob.backend.users.app.security.services.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -44,5 +41,13 @@ public class AuthenticationController
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(service.validateJwt(jwt));
+    }
+
+    @GetMapping("users/profile")
+    public ResponseEntity<UserResponseDto> findProfile()
+    {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(service.findLoggedInUser());
     }
 }

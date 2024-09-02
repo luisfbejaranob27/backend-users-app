@@ -15,6 +15,10 @@ public class UserDto implements Serializable
 {
     @NotBlank
     @Size(min = 4)
+    private String name;
+
+    @NotBlank
+    @Size(min = 4)
     private String username;
 
     @NotBlank
@@ -27,8 +31,4 @@ public class UserDto implements Serializable
 
     @NotBlank
     private String email;
-
-    @NotBlank
-    @Size(min = 4)
-    private String name;
 }

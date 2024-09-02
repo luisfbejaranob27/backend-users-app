@@ -45,7 +45,7 @@ public class JwtService
                 .getPayload();
     }
 
-    private String getSubject(String token)
+    public String getSubject(String token)
     {
         return getClaims(token).getSubject();
     }
