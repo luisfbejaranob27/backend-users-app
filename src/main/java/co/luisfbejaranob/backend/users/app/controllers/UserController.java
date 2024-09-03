@@ -9,7 +9,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +29,6 @@ public class UserController
         this.authenticationService = authenticationService;
     }
 
-    @PreAuthorize("hasAuthority('READ_ALL_USERS')")
     @GetMapping
     public ResponseEntity<List<User>> findAll()
     {
@@ -39,7 +37,6 @@ public class UserController
                 .body(userService.findAll());
     }
 
-    @PreAuthorize("hasAuthority('READ_USER_BY_ID')")
     @GetMapping("{id}")
     public ResponseEntity<User> findById(@PathVariable UUID id)
     {
@@ -48,7 +45,6 @@ public class UserController
                 .body(userService.findById(id));
     }
 
-    @PreAuthorize("hasAuthority('READ_USER_BY_USERNAME')")
     @GetMapping("username/{username}")
     public ResponseEntity<User> findByUsername(@PathVariable String username)
     {
@@ -57,7 +53,6 @@ public class UserController
                 .body(userService.findByUsername(username));
     }
 
-    @PreAuthorize("hasAuthority('EXIST_USER')")
     @GetMapping("exists/{filter}/{value}")
     public ResponseEntity<Boolean> exist(@PathVariable String filter, @PathVariable String value)
     {
@@ -72,7 +67,6 @@ public class UserController
                 .body(result);
     }
 
-    @PreAuthorize("hasAuthority('CREATE_USER')")
     @PostMapping
     public ResponseEntity<User> create(@RequestBody @Valid User user)
     {
@@ -81,7 +75,6 @@ public class UserController
                 .body(authenticationService.create(user));
     }
 
-    @PreAuthorize("hasAuthority('UPDATE_USER')")
     @PutMapping("{id}")
     public ResponseEntity<User> update(@PathVariable UUID id, @RequestBody User user) throws IllegalAccessException {
         return ResponseEntity
@@ -89,7 +82,6 @@ public class UserController
                 .body(userService.update(id, user));
     }
 
-    @PreAuthorize("hasAuthority('DELETE_USER')")
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteById(@PathVariable UUID id)
     {

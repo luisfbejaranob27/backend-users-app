@@ -5,7 +5,6 @@ import co.luisfbejaranob.backend.users.app.security.services.AuthenticationServi
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +17,6 @@ public class AuthenticationController
         this.service = service;
     }
 
-    @PreAuthorize("permitAll")
     @PostMapping("users/register")
     public ResponseEntity<RegisteredDto> register(@RequestBody @Valid UserDto userDto)
     {
@@ -27,7 +25,6 @@ public class AuthenticationController
                 .body(service.register(userDto));
     }
 
-    @PreAuthorize("hasAuthority('READ_PROFILE')")
     @GetMapping("users/profile")
     public ResponseEntity<UserResponseDto> findProfile()
     {
@@ -36,7 +33,6 @@ public class AuthenticationController
                 .body(service.findLoggedInUser());
     }
 
-    @PreAuthorize("permitAll")
     @PostMapping("auth/authenticate")
     public ResponseEntity<AuthenticationResponseDto> authenticate(
             @RequestBody @Valid AuthenticationRequestDto request
@@ -47,7 +43,6 @@ public class AuthenticationController
                 .body(service.authenticate(request));
     }
 
-    @PreAuthorize("permitAll")
     @GetMapping("auth/validate-token")
     public ResponseEntity<Boolean> validate(@RequestParam String jwt)
     {
