@@ -1,19 +1,14 @@
 package co.luisfbejaranob.backend.users.app.utils.mappers;
 
+import co.luisfbejaranob.backend.users.app.dto.UserDto;
 import co.luisfbejaranob.backend.users.app.entities.User;
-import co.luisfbejaranob.backend.users.app.entities.enumerations.Role;
 import co.luisfbejaranob.backend.users.app.security.dto.RegisteredDto;
-import co.luisfbejaranob.backend.users.app.security.dto.UserDto;
-import co.luisfbejaranob.backend.users.app.security.services.JwtService;
+import co.luisfbejaranob.backend.users.app.security.dto.UserRegisterDto;
 
 public class UserMappers
 {
-    private static JwtService service;
-
     private UserMappers()
-    {
-        service = new JwtService();
-    }
+    {}
 
     public static User toEntity(UserDto dto)
     {
@@ -23,7 +18,18 @@ public class UserMappers
                 .username(dto.getUsername())
                 .password(dto.getPassword())
                 .email(dto.getEmail())
-                .role(Role.USER)
+                .build();
+    }
+
+    public static UserDto toUserDto(UserRegisterDto dto)
+    {
+        return UserDto
+                .builder()
+                .name(dto.getName())
+                .username(dto.getUsername())
+                .password(dto.getPassword())
+                .email(dto.getEmail())
+                .role(dto.getRole())
                 .build();
     }
 
@@ -33,7 +39,7 @@ public class UserMappers
                 .id(user.getId())
                 .name(user.getName())
                 .username(user.getUsername())
-                .role(user.getRole().name())
+                .role(user.getRole().getName())
                 .jwt(token)
                 .build();
     }

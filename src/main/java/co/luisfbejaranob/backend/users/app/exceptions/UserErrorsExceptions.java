@@ -2,7 +2,7 @@ package co.luisfbejaranob.backend.users.app.exceptions;
 
 import co.luisfbejaranob.backend.users.app.utils.exceptions.CustomError;
 
-public interface UserExceptions
+public interface UserErrorsExceptions
 {
     final class UsersNotFoundException extends CustomError
     {

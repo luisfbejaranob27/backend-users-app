@@ -1,6 +1,6 @@
 package co.luisfbejaranob.backend.users.app.entities;
 
-import co.luisfbejaranob.backend.users.app.entities.enumerations.Role;
+import co.luisfbejaranob.backend.users.app.security.entities.Role;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import jakarta.persistence.*;
@@ -31,29 +31,17 @@ public class User implements UserDetails
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank
     private String name;
 
     @Column(unique = true)
-    @NotBlank
-    @Size(min = 5, max = 50)
     private String username;
 
-    @NotBlank
-    @Size(min = 8, message = "Must be at least 8 characters long")
-    @Pattern(regexp = ".*[A-Z].*", message = "Must contain at least one uppercase letter")
-    @Pattern(regexp = ".*[a-z].*", message = "Must contain at least one lowercase letter")
-    @Pattern(regexp = ".*\\d.*", message = "Must contain at least one digit")
-    @Pattern(regexp = ".*[@$!%*?&].*", message = "Must contain at least one special character (@$!%*?&)")
     private String password;
 
     @Column(unique = true)
-    @NotBlank
-    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", message = "The email must have a valid format")
     private String email;
 
-//    @NotBlank
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
     private Role role;
 
     @Column(name = "create_at")
@@ -84,14 +72,14 @@ public class User implements UserDetails
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         if(role == null) return null;
-        if(role.getOperations() == null) return null;
+        if(role.getPermissions() == null) return null;
 
-        List<SimpleGrantedAuthority> authorities = role.getOperations().stream()
-                .map(Enum::name)
+        List<SimpleGrantedAuthority> authorities = role.getPermissions().stream()
+                .map(authority -> authority.getOperation().getName())
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        authorities.add(new SimpleGrantedAuthority("ROLE_%s".formatted(this.role.name())));
+        authorities.add(new SimpleGrantedAuthority("ROLE_%s".formatted(role.name)));
 
         return authorities;
     }

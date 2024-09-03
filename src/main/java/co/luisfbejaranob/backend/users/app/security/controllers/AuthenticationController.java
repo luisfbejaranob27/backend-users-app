@@ -18,7 +18,7 @@ public class AuthenticationController
     }
 
     @PostMapping("users/register")
-    public ResponseEntity<RegisteredDto> register(@RequestBody @Valid UserDto userDto)
+    public ResponseEntity<RegisteredDto> register(@RequestBody @Valid UserRegisterDto userDto)
     {
         return ResponseEntity
                 .status(HttpStatus.CREATED)

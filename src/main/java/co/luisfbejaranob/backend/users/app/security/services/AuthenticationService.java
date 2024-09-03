@@ -1,5 +1,6 @@
 package co.luisfbejaranob.backend.users.app.security.services;
 
+import co.luisfbejaranob.backend.users.app.dto.UserDto;
 import co.luisfbejaranob.backend.users.app.entities.User;
 import co.luisfbejaranob.backend.users.app.security.dto.*;
 import co.luisfbejaranob.backend.users.app.security.exceptions.UserErrorsExceptions.*;
@@ -23,32 +24,38 @@ public class AuthenticationService
 
     private final PasswordEncoder passwordEncoder;
 
+    private final RoleService roleService;
+
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationService(UserService userService, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager)
+    public AuthenticationService(UserService userService, JwtService jwtService, PasswordEncoder passwordEncoder, RoleService roleService, AuthenticationManager authenticationManager)
     {
         this.userService = userService;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
         this.authenticationManager = authenticationManager;
     }
 
-    public User create(User user)
+    public User create(UserDto user)
     {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userService.create(user);
+        User newUser = toEntity(user);
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setRole(roleService.findByName(user.getRole()));
+        return userService.create(newUser);
     }
 
-    public RegisteredDto register(UserDto userDto)
+    public RegisteredDto register(UserRegisterDto userRegisterDto)
     {
-        validatePassword(userDto);
+        validatePassword(userRegisterDto);
 
-        User newUser = create(toEntity(userDto));
+        userRegisterDto.setRole("USER");
+        User newUser = create(toUserDto(userRegisterDto));
 
         return toRegisteredDto(newUser, jwtService.generateToken(newUser));
     }
 
-    private void validatePassword(UserDto userDto)
+    private void validatePassword(UserRegisterDto userDto)
     {
         if(!StringUtils.hasText(userDto.getPassword()) || !StringUtils.hasText(userDto.getRepeatPassword()))
         {

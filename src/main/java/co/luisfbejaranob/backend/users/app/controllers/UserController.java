@@ -1,7 +1,8 @@
 package co.luisfbejaranob.backend.users.app.controllers;
 
+import co.luisfbejaranob.backend.users.app.dto.UserDto;
 import co.luisfbejaranob.backend.users.app.entities.User;
-import co.luisfbejaranob.backend.users.app.exceptions.UserExceptions.*;
+import co.luisfbejaranob.backend.users.app.exceptions.UserErrorsExceptions.*;
 import co.luisfbejaranob.backend.users.app.security.services.AuthenticationService;
 import co.luisfbejaranob.backend.users.app.utils.exceptions.dto.ApiErrorDto;
 import co.luisfbejaranob.backend.users.app.services.UserService;
@@ -68,7 +69,7 @@ public class UserController
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody @Valid User user)
+    public ResponseEntity<User> create(@RequestBody @Valid UserDto user)
     {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
