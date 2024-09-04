@@ -79,8 +79,6 @@ public class User implements UserDetails
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        authorities.add(new SimpleGrantedAuthority("ROLE_%s".formatted(role.name)));
-
         return authorities;
     }
 

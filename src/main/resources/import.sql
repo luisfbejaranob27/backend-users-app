@@ -38,12 +38,12 @@ INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('V
 INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('AUTHENTICATE' , '/register' , 'POST' , true , 6);
 INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('READ_PROFILE' , '/profile' , 'GET' , false , 6);
 INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('READ_ALL_USERS' , '' , 'GET' , false , 6);
-INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('READ_USER_BY_ID' , '/{id}' , 'GET' , false , 6);
-INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('READ_USER_BY_USERNAME' , '/username/{username}' , 'GET' , false , 6);
-INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('EXIST_USER' , '/exists/{filter}/{value}' , 'GET' , true , 6);
+INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('READ_USER_BY_ID' , '/.*' , 'GET' , false , 6);
+INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('READ_USER_BY_USERNAME' , '/username/.*' , 'GET' , false , 6);
+INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('EXIST_USER' , '/exists/.*/.*' , 'GET' , true , 6);
 INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('CREATE_USER' , '' , 'POST' , false , 6);
-INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('UPDATE_USER' , '/{id}' , 'PUT' , false , 6);
-INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('DELETE_USER' , '/{id}' , 'DELETE' , false , 6);
+INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('UPDATE_USER' , '/.*' , 'PUT' , false , 6);
+INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('DELETE_USER' , '/.*' , 'DELETE' , false , 6);
 
 
 INSERT INTO ROLES (name) VALUES ('ADMINISTRATOR');
