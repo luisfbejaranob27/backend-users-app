@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
@@ -41,7 +42,7 @@ public class HttpSecurityConfig
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, CorsConfigurationSource corsConfigurationSource) throws Exception {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(AbstractHttpConfigurer::disable)
@@ -56,6 +57,9 @@ public class HttpSecurityConfig
                 .exceptionHandling(exceptionConfig -> {
                     exceptionConfig.authenticationEntryPoint(authenticationEntryPoint);
                     exceptionConfig.accessDeniedHandler(accessDeniedHandler);
+                })
+                .cors(corsConfig -> {
+                    corsConfig.configurationSource(corsConfigurationSource);
                 });
 
         return httpSecurity.build();

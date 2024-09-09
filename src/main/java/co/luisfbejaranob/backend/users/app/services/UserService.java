@@ -3,7 +3,6 @@ package co.luisfbejaranob.backend.users.app.services;
 import co.luisfbejaranob.backend.users.app.entities.User;
 import co.luisfbejaranob.backend.users.app.exceptions.UserErrorsExceptions.*;
 import co.luisfbejaranob.backend.users.app.repositories.UserRepository;
-import co.luisfbejaranob.backend.users.app.security.services.RoleService;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,12 +14,9 @@ public class UserService
 {
     private final UserRepository repository;
 
-    private final RoleService roleService;
-
-    public UserService(UserRepository repository, RoleService roleService)
+    public UserService(UserRepository repository)
     {
         this.repository = repository;
-        this.roleService = roleService;
     }
 
     public List<User> findAll()
