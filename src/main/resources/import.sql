@@ -33,9 +33,11 @@ INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('C
 INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('DELETE_PERMISSION' , '/[0-9]*' , 'DELETE' , false , 4);
 
 INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('AUTHENTICATE' , '/authenticate' , 'POST' , true , 5);
+INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('REFRESH_TOKEN' , '/refresh-token' , 'POST' , true , 5);
 INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('VALIDATE_TOKEN' , '/validate-token' , 'GET' , true , 5);
+INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('LOGOUT' , '/logout/.*' , 'GET' , true , 5);
 
-INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('AUTHENTICATE' , '/register' , 'POST' , true , 6);
+INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('REGISTER' , '/register' , 'POST' , true , 6);
 INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('READ_PROFILE' , '/profile' , 'GET' , false , 6);
 INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('READ_ALL_USERS' , '' , 'GET' , false , 6);
 INSERT INTO OPERATIONS (name, path , method , permit_all , module_id) VALUES ('READ_USER_BY_ID' , '/.*' , 'GET' , false , 6);
@@ -84,14 +86,27 @@ INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (1 , 30);
 INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (1 , 31);
 INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (1 , 32);
 INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (1 , 33);
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (1 , 34);
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (1 , 35);
 
+
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (2 , 23);
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (2 , 24);
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (2 , 25);
 INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (2 , 26);
 INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (2 , 27);
 INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (2 , 28);
 INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (2 , 29);
 INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (2 , 30);
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (2 , 31);
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (2 , 32);
 
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (3 , 23);
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (3 , 24);
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (3 , 25);
 INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (3 , 26);
-INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (3 , 30);
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (3 , 27);
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (3 , 28);
+INSERT INTO GRANTED_PERMISSIONS (role_id , operation_id) VALUES (3 , 32);
 
 INSERT INTO users (id, name, username, password, email, role_id, create_at) VALUES ('6b27e2dc-9afb-36f3-a433-add532882f70','Luis Ferley Bejarano Buritica', 'luisfbejaranob', '$2a$12$HYwD9bIF0BZkXaE4j5jZ7O/V233ILTxHVLlSR.674B3m4XMrxLj3q', 'luisfbejaranob@outlook.com', 1, now());

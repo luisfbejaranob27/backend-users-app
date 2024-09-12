@@ -30,7 +30,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint
     ) throws IOException {
         ApiErrorDto apiError = new ApiErrorDto(
                 HttpStatus.UNAUTHORIZED,
-                null,
                 authException.getLocalizedMessage(),
                 "Authentication credentials not found");
 

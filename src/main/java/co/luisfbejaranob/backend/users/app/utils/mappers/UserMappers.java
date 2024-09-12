@@ -33,14 +33,14 @@ public class UserMappers
                 .build();
     }
 
-    public static RegisteredDto toRegisteredDto(User user, String token)
+    public static RegisteredDto toRegisteredDto(User user)
     {
         return RegisteredDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .username(user.getUsername())
+                .email(user.getEmail())
                 .role(user.getRole().getName())
-                .jwt(token)
                 .build();
     }
 }

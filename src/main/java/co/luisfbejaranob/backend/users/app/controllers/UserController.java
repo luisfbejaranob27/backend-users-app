@@ -7,6 +7,8 @@ import co.luisfbejaranob.backend.users.app.security.services.AuthenticationServi
 import co.luisfbejaranob.backend.users.app.utils.exceptions.dto.ApiErrorDto;
 import co.luisfbejaranob.backend.users.app.services.UserService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +32,19 @@ public class UserController
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll()
+    public ResponseEntity<Page<User>> findAll(Pageable pageable)
     {
+        Page<User> users = userService.findAll(pageable);
+
+        if(users.hasContent())
+        {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(users);
+        }
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(userService.findAll());
+                .status(HttpStatus.NOT_FOUND)
+                .body(users);
     }
 
     @GetMapping("{id}")
@@ -76,7 +86,7 @@ public class UserController
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<User> update(@PathVariable UUID id, @RequestBody User user) throws IllegalAccessException {
+    public ResponseEntity<User> update(@PathVariable UUID id, @RequestBody UserDto user) throws IllegalAccessException {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.update(id, user));

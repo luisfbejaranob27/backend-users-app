@@ -5,14 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class AuthenticationResponseDto implements Serializable
+public class LogoutResponseDto
 {
-    private String jwt;
-    private String refreshToken;
+    private String message;
 }

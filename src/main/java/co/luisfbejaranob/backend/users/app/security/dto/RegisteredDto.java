@@ -18,7 +18,7 @@ public class RegisteredDto implements Serializable
 
     private String username;
 
-    private String role;
+    private String email;
 
-    private String jwt;
+    private String role;
 }

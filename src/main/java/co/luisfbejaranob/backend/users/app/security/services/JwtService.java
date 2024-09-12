@@ -15,10 +15,7 @@ import static co.luisfbejaranob.backend.users.app.security.constants.ConstantJwt
 @Service
 public class JwtService
 {
-    @Value("${jwt.expiration}")
-    private Integer expiration;
-
-    public String generateToken(User user)
+    public String generateToken(User user, Integer expiration)
     {
         Claims claims = Jwts.claims()
                 .add("role", user.getRole().name)

@@ -30,7 +30,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler
     ) throws IOException {
         ApiErrorDto apiError = new ApiErrorDto(
                 HttpStatus.FORBIDDEN,
-                null,
                 accessDeniedException.getLocalizedMessage(),
                 "You do not have the permissions to execute the request");
 

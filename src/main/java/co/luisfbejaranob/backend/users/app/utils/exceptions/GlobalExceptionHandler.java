@@ -50,7 +50,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         }
 
         ApiErrorDto apiError =
-                new ApiErrorDto(HttpStatus.BAD_REQUEST, null, null, errors);
+                new ApiErrorDto(HttpStatus.BAD_REQUEST, null, errors);
 
         assert headers != null;
         assert request != null;
@@ -69,7 +69,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         String error = ex.getParameterName() + " parameter is missing";
 
         ApiErrorDto apiError =
-                new ApiErrorDto(HttpStatus.BAD_REQUEST, null, ex.getLocalizedMessage(), error);
+                new ApiErrorDto(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
@@ -86,7 +86,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         assert ex != null;
         String error = "No handler found for " + ex.getHttpMethod() + " " + ex.getRequestURL();
 
-        ApiErrorDto apiError = new ApiErrorDto(HttpStatus.NOT_FOUND, null, ex.getLocalizedMessage(), error);
+        ApiErrorDto apiError = new ApiErrorDto(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), error);
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
@@ -107,7 +107,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
                 " method is not supported for this request. Supported methods are ");
         Objects.requireNonNull(ex.getSupportedHttpMethods()).forEach(t -> builder.append(t).append(" "));
 
-        ApiErrorDto apiError = new ApiErrorDto(HttpStatus.METHOD_NOT_ALLOWED, null, ex.getLocalizedMessage(), builder.toString());
+        ApiErrorDto apiError = new ApiErrorDto(HttpStatus.METHOD_NOT_ALLOWED, ex.getLocalizedMessage(), builder.toString());
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
@@ -137,17 +137,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException e)
     {
+        System.out.println(e);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ApiErrorDto(HttpStatus.BAD_REQUEST , null, null , getErrorMessage(e.getMessage())));
+                .body(new ApiErrorDto(HttpStatus.BAD_REQUEST, null , getErrorMessage(e.getMessage())));
     }
 
     private String getErrorMessage(String message)
     {
         String msg = message;
-        if(message.contains("Unique index or primary key violation"))
+        if(message.contains("USERS") && message.contains("USERNAME"))
         {
-            msg = "User is already registered";
+            msg = "Username is already registered";
+        } else if (message.contains("USERS") && message.contains("EMAIL")) {
+            msg = "Email is already registered";
+        } else if (message.contains("REFRESH_TOKENS")) {
+            msg = "Session is already registered";
         }
         return msg;
     }
@@ -163,7 +168,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         }
 
         ApiErrorDto apiError =
-                new ApiErrorDto(HttpStatus.BAD_REQUEST, null, null, errors);
+                new ApiErrorDto(HttpStatus.BAD_REQUEST, null, errors);
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
@@ -178,7 +183,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
                 ex.getName() + " should be of type " + Objects.requireNonNull(ex.getRequiredType()).getName();
 
         ApiErrorDto apiError =
-                new ApiErrorDto(HttpStatus.BAD_REQUEST, null, ex.getLocalizedMessage(), error);
+                new ApiErrorDto(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
@@ -188,7 +193,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex)
     {
         ApiErrorDto apiError =
-                new ApiErrorDto(HttpStatus.BAD_REQUEST, null, ex.getMessage());
+                new ApiErrorDto(HttpStatus.BAD_REQUEST, ex.getMessage());
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
@@ -199,7 +204,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<Object> handleAuthorizationDeniedException(AuthorizationDeniedException ex)
     {
         ApiErrorDto apiError =
-                new ApiErrorDto(HttpStatus.FORBIDDEN, null, ex.getMessage());
+                new ApiErrorDto(HttpStatus.FORBIDDEN, ex.getMessage());
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
@@ -209,7 +214,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex)
     {
         ApiErrorDto apiError =
-                new ApiErrorDto(HttpStatus.BAD_REQUEST, null, ex.getMessage());
+                new ApiErrorDto(HttpStatus.BAD_REQUEST, ex.getMessage());
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());
@@ -220,7 +225,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<Object> handleInternalAuthenticationServiceException(InternalAuthenticationServiceException ex)
     {
         ApiErrorDto apiError =
-                new ApiErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, null, ex.getMessage());
+                new ApiErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 
         return new ResponseEntity<>(
                 apiError, new HttpHeaders(), apiError.getStatus());

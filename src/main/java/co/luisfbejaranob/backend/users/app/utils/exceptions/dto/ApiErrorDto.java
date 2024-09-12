@@ -24,33 +24,23 @@ public class ApiErrorDto implements Serializable
 
     private HttpStatus status;
 
-    private String code;
-
     private String message;
 
     private List<String> errors;
 
-    public ApiErrorDto(HttpStatus status, String code, String message)
+    public ApiErrorDto(HttpStatus status, String message)
     {
         super();
         this.status = status;
-        this.code = code;
         this.message = message;
     }
 
-    public ApiErrorDto(HttpStatus status, String code, String message, String error)
+    public ApiErrorDto(HttpStatus status, String message, String error)
     {
         super();
         this.status = status;
-        this.code = code;
         this.message = message;
         errors = Collections.singletonList(error);
-    }
-
-    @JsonInclude(Include.NON_NULL)
-    public String getCode()
-    {
-        return code;
     }
 
     @JsonInclude(Include.NON_NULL)
